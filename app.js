@@ -4,27 +4,33 @@ const { getColorFromURL } = require('color-thief-node');
 const rgbHex = require('rgb-hex');
 const fs = require('fs');
 
-const size = 10;
+// setting size of array, will be used to limit the size of the array
+const sizeofArray = 10;
 
+// function to create/store the json file
 const writefile = (obj) => {
-  fs.writeFile('prominent_color.json', JSON.stringify(obj), function (err) {
+  fs.writeFile('product_details_with_color.json', JSON.stringify(obj), function (err) {
     if (err) return console.log(err);
-    console.log('success');
+    console.log('<product_details_with_color.json> file created in same directoty as the project ');
   });
 }
 
+// fetching data from the API
 fetch('https://www.farfetch.com/uk/plpslice/listing-api/query?setId=9645&view=180&gender=Men')
   .then(res => res.json())
   .then(data => sendProductDetailsWithProminentColor(data.listing.products))
 
+// main method of the program
 const sendProductDetailsWithProminentColor = (products) => {
   let res = [];
 
   if (products) {
-    const tenProducts = products.slice(0, size).map(i => {
+    // only keeping 10 products from the fetch
+    const tenProducts = products.slice(0, sizeofArray).map(i => {
       return i;
     });
 
+    // function get the name of the prominent color of each picture (using different libraries)
     const returnColorfromImage = (product) => {
       return new Promise((resolve, reject) => {
         (async () => {
@@ -38,6 +44,7 @@ const sendProductDetailsWithProminentColor = (products) => {
     }
 
     tenProducts.forEach(async (product) => {
+      // for each products, getting the required data and them to the array res
       const prominentColor = await returnColorfromImage(product);
       res.push({
         name: product.shortDescription,
@@ -47,6 +54,7 @@ const sendProductDetailsWithProminentColor = (products) => {
         color: prominentColor
       })
 
+      // calling the writefile() method to create the json file
       writefile(res)
     })
   }

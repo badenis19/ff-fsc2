@@ -13,7 +13,7 @@ The output is a JSON file which contains an array of products listing the produc
 - Download the repository. Then run the command below:
 
 ```sh
-node app.js
+npm install && node app.js
 ```
 A file will be created (product_details_with_color.json) in the same directory after running the command.
 

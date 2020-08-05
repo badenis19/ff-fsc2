@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
-const ntc = require('ntc');
-const { getColorFromURL } = require('color-thief-node');
-const rgbHex = require('rgb-hex');
+const ntc = require('ntc'); // to recover human name from hex code 
+const { getColorFromURL } = require('color-thief-node'); // to get color from URL 
+const rgbHex = require('rgb-hex'); // rgb to hexadecimal 
 const fs = require('fs');
 
 // setting size of array, will be used to limit the size of the array
@@ -11,7 +11,7 @@ const sizeofArray = 10;
 const writefile = (obj) => {
   fs.writeFile('product_details_with_color.json', JSON.stringify(obj), function (err) {
     if (err) return console.log(err);
-    console.log('<product_details_with_color.json> file created in same directoty as the project ');
+    console.log('<product_details_with_color.json> file created in same directory as the project ');
   });
 }
 
@@ -34,7 +34,7 @@ const sendProductDetailsWithProminentColor = (products) => {
     const returnColorfromImage = (product) => {
       return new Promise((resolve, reject) => {
         (async () => {
-          const preminantColor = await getColorFromURL(product.images.cutOut);
+          const preminantColor = await getColorFromURL(product.images.cutOut); // rgb in wrong format
           let rgbString = preminantColor.toString().replace(" ", ",");
           let hex = rgbHex(rgbString);
           const ntcMatch = ntc.name(hex);
@@ -54,8 +54,10 @@ const sendProductDetailsWithProminentColor = (products) => {
         color: prominentColor
       })
 
-      // calling the writefile() method to create the json file
-      writefile(res)
     })
+    
+    // calling the writefile() method to create the json file
+    writefile(res);
   }
+
 }

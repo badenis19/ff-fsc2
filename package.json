@@ -5,7 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "color-thief-node": "^1.0.3",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "ntc": "0.0.1",
     "rgb-hex": "^3.0.0"
   },
